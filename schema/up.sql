@@ -11,6 +11,14 @@ CREATE TABLE image_location (
        longitude REAL
 );
 
+CREATE TABLE image_locations (
+       id INT PRIMARY KEY,
+       image_id INT,
+       image_location_id INT,
+       FOREIGN KEY (image_id) REFERENCES image (id),
+       FOREIGN KEY (image_location_id) REFERENCES image_location (id)
+);
+
 CREATE TABLE image_rating_value (
        value INT PRIMARY KEY
 );
