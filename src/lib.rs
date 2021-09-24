@@ -22,7 +22,7 @@ pub fn run(operation: Operation) -> Result<(), Error> {
 	},
     };
     match operation {
-	Operation::Build(pb) => {
+	Operation::Index(pb) => {
 	    let results = build_path_hash_vec_from_path(pb)?;
 	    for result in results {
 		store.put_image(&result.0, &result.1)?;
