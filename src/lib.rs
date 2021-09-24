@@ -20,6 +20,9 @@ pub fn run(operation: Operation) -> Result<(), Error> {
         false => Store::create(path)?,
     };
     match operation {
+        Operation::AddCategory(category) => {
+            let _ = store.put_image_category_value(category)?;
+        }
         Operation::Index(pb) => {
             let results = build_path_hash_vec_from_path(pb)?;
             for result in results {

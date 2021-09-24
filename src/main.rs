@@ -8,6 +8,15 @@ fn main() {
         .author("Richard Bradshaw")
         .about("An image indexer")
         .subcommand(
+            SubCommand::with_name("category").arg(
+                Arg::with_name("add")
+                    .short("a")
+                    .long("add")
+                    .required(false)
+                    .takes_value(true),
+            ),
+        )
+        .subcommand(
             SubCommand::with_name("index").arg(
                 Arg::with_name("path")
                     .short("p")
@@ -26,7 +35,11 @@ fn main() {
             ),
         )
         .get_matches();
-    if let Some(matches) = matches.subcommand_matches("index") {
+    if let Some(matches) = matches.subcommand_matches("category") {
+        if let Some(add) = matches.value_of("add") {
+            run(Operation::AddCategory(add)).unwrap();
+        }
+    } else if let Some(matches) = matches.subcommand_matches("index") {
         let path = Path::new(matches.value_of("path").unwrap());
         run(Operation::Index(path.to_path_buf())).unwrap();
     } else if let Some(matches) = matches.subcommand_matches("list") {
