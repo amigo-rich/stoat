@@ -3,25 +3,29 @@ use crate::error::Error;
 use crate::image::Image;
 use crate::location::Location;
 use crate::rating::Rating;
+use crate::schema::TABLES;
 use rusqlite::{params, Connection};
 use std::path::Path;
 
 #[derive(Debug)]
-struct Store {
+pub struct Store {
     con: Connection,
 }
 
 impl Store {
-    pub fn create(path: &Path, schema: &str) -> Result<Self, Error> {
+    pub fn create(path: &Path) -> Result<Self, Error> {
+	let con = Connection::open(path)?;
+	for item in TABLES {
+	    let _ = con.execute(item, params![])?;
+	}
+	Ok(Store{con})
+    }
+    pub fn open(path: &Path) -> Result<Self, Error> {
 	if !path.is_file() {
 	    return Err(Error::NotAFile(path.to_path_buf()));
 	}
-	if schema.is_empty() {
-	    return Err(Error::EmptySchema);
-	}
-	let con = Connection::open(path).unwrap();
-	let _ = con.execute(schema, params![])?;
-	Ok(Store { con })
+	let con = Connection::open(path)?;
+	Ok(Store{con})
     }
     pub fn put_image(&self, hash: &str, path: &Path) -> Result<Image, Error> {
 	let sql = r#"

@@ -7,4 +7,4 @@ edition = "2018"
 
 [dependencies]
 blake3 = "1.0.0"
-rusqlite = "0.25.3"
+rusqlite = { version = "0.25.3", features = [ "bundled" ] }

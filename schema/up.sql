@@ -1,18 +1,18 @@
 CREATE TABLE image (
-       id INT PRIMARY KEY,
-       hash TEXT UNIQUE,
+       id INTEGER PRIMARY KEY,
+       hash TEXT NOT NULL,
        path TEXT NOT NULL
 );
 
 CREATE TABLE image_location (
-       id INT PRIMARY KEY,
+       id INTEGER PRIMARY KEY,
        name TEXT,
        latitude REAL,
        longitude REAL
 );
 
 CREATE TABLE image_locations (
-       id INT PRIMARY KEY,
+       id INTEGER PRIMARY KEY,
        image_id INT,
        image_location_id INT,
        FOREIGN KEY (image_id) REFERENCES image (id),
@@ -20,11 +20,11 @@ CREATE TABLE image_locations (
 );
 
 CREATE TABLE image_rating_value (
-       value INT PRIMARY KEY
+       value INTEGER PRIMARY KEY
 );
 
 CREATE TABLE image_ratings (
-       id INT PRIMARY KEY,
+       id INTEGER PRIMARY KEY,
        image_id INT,
        image_rating_value_value INT,
        FOREIGN KEY (image_id) REFERENCES image(id),
@@ -36,7 +36,7 @@ CREATE TABLE image_category_value (
 );
 
 CREATE TABLE image_categories (
-       id INT PRIMARY KEY,
+       id INTEGER PRIMARY KEY,
        image_id INT,
        image_category_value_value TEXT,
        FOREIGN KEY (image_id) REFERENCES image (id),
