@@ -5,4 +5,3 @@ pub struct Location {
     pub latitude: f32,
     pub longitude: f32,
 }
-    
