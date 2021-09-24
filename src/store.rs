@@ -156,4 +156,52 @@ impl Store {
         let id = self.con.last_insert_rowid();
         Ok(id)
     }
+    pub fn select_image(&self) -> Result<Option<Vec<Image>>, Error> {
+        let sql = r#"
+            SELECT id, hash, path
+            FROM image
+        "#;
+        let mut statement = self.con.prepare(sql)?;
+        let iter = statement.query_map(params![], |row| {
+            let path_rep: String = row.get(2)?;
+            Ok(Image {
+                id: row.get(0)?,
+                hash: row.get(1)?,
+                path: Path::new(&path_rep).to_path_buf(),
+            })
+        })?;
+        let mut images: Vec<Image> = Vec::new();
+        for image in iter {
+            images.push(image?);
+        }
+        if images.is_empty() {
+            return Ok(None);
+        }
+        Ok(Some(images))
+    }
+    pub fn select_image_path_like(&self, like: &str) -> Result<Option<Vec<Image>>, Error> {
+        let sql = r#"
+            SELECT id, hash, path
+            FROM image
+            WHERE LIKE(?1, path)
+        "#;
+        let mut statement = self.con.prepare(sql)?;
+        let hack = format!("%{}%", like);
+        let iter = statement.query_map(params![&hack], |row| {
+            let path_rep: String = row.get(2)?;
+            Ok(Image {
+                id: row.get(0)?,
+                hash: row.get(1)?,
+                path: Path::new(&path_rep).to_path_buf(),
+            })
+        })?;
+        let mut images: Vec<Image> = Vec::new();
+        for image in iter {
+            images.push(image?);
+        }
+        if images.is_empty() {
+            return Ok(None);
+        }
+        Ok(Some(images))
+    }
 }

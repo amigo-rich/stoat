@@ -16,9 +16,24 @@ fn main() {
                     .takes_value(true),
             ),
         )
+        .subcommand(
+            SubCommand::with_name("list").arg(
+                Arg::with_name("like")
+                    .short("l")
+                    .long("--like")
+                    .required(false)
+                    .takes_value(true),
+            ),
+        )
         .get_matches();
     if let Some(matches) = matches.subcommand_matches("index") {
         let path = Path::new(matches.value_of("path").unwrap());
         run(Operation::Index(path.to_path_buf())).unwrap();
+    } else if let Some(matches) = matches.subcommand_matches("list") {
+        if let Some(like) = matches.value_of("like") {
+            run(Operation::ListLike(like)).unwrap();
+        } else {
+            run(Operation::List).unwrap();
+        }
     }
 }

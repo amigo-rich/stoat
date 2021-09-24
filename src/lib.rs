@@ -26,6 +26,22 @@ pub fn run(operation: Operation) -> Result<(), Error> {
                 store.put_image(&result.0, &result.1)?;
             }
         }
+        Operation::List => {
+            let maybe_images = store.select_image()?;
+            if let Some(images) = maybe_images {
+                for image in images {
+                    println!("{:?}", image);
+                }
+            }
+        }
+        Operation::ListLike(value) => {
+            let maybe_images = store.select_image_path_like(value)?;
+            if let Some(images) = maybe_images {
+                for image in images {
+                    println!("{:?}", image);
+                }
+            }
+        }
     }
     Ok(())
 }
