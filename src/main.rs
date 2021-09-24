@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use stoat::{run, operation::Operation};
 
 fn main() {

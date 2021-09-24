@@ -3,7 +3,6 @@ use build::build_path_hash_vec_from_path;
 mod category;
 mod error;
 use error::Error;
-use std::fs;
 mod image;
 mod location;
 pub mod operation;

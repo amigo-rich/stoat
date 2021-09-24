@@ -1,5 +1,5 @@
 use crate::error::Error;
-use std::fs::{self, DirEntry};
+use std::fs::{self};
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{channel, Sender};
 use std::thread;
