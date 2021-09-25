@@ -23,6 +23,9 @@ pub fn run(operation: Operation) -> Result<(), Error> {
         Operation::AddCategory(category) => {
             let _ = store.put_image_category_value(category)?;
         }
+        Operation::AddLocation(name, latitude, longitude) => {
+            let _ = store.put_image_location(name, latitude, longitude)?;
+        }
         Operation::Index(pb) => {
             let results = build_path_hash_vec_from_path(pb)?;
             for result in results {
